@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+
+
+<changeSet id="1.0.0" author="cyril">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+
+            <column name="username" type="VARCHAR(100)" >
+                <constraints nullable="false" unique="true"></constraints>
+            </column>
+
+            <column name="password" type="VARCHAR(255)" >
+                <constraints nullable="false"></constraints>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.1" author="cyril">
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+
+            <column name="name" type="VARCHAR(100)" >
+                <constraints nullable="false" unique="true"></constraints>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.2" author="cyril">
+        <createTable tableName="user_roles">
+            <column name="user_id" type="BIGINT">
+            </column>
+            <column name="role_id" type="BIGINT">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.3" author="cyril">
+       <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="fk_user_roles_user" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1.0.4" author="cyril">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles" constraintName="fk_user_roles_roles" referencedColumnNames="id" referencedTableName="roles"/>
+    </changeSet>
+
+    <changeSet id="1.0.5" author="cyril">
+       <insert tableName="roles">
+           <column name="name" value="ROLE_USER"></column>
+       </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_ADMIN"></column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.6" author="cyril">
+        <createTable tableName="products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+
+            <column name="name" type="VARCHAR(100)" >
+                <constraints nullable="false" unique="true"></constraints>
+            </column>
+
+            <column name="description" type="VARCHAR(255)" >
+                <constraints nullable="false"></constraints>
+            </column>
+
+            <column name="price" type="REAL" >
+                <constraints nullable="false"></constraints>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.7" author="cyril">
+        <createTable tableName="shopping_carts">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"></constraints>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.8" author="cyril">
+        <createTable tableName="shopping_cart_products">
+            <column name="shopping_cart_id" type="BIGINT">
+            </column>
+            <column name="product_id" type="BIGINT">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.9" author="cyril">
+        <addForeignKeyConstraint baseColumnNames="shopping_cart_id" baseTableName="shopping_carts_products" constraintName="fk_shopping_cart_products_shopping_cart" referencedColumnNames="id" referencedTableName="shopping_carts"/>
+    </changeSet>
+    <changeSet id="1.1.0" author="cyril">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="shopping_cart_products" constraintName="fk_shopping_cart_products_products" referencedColumnNames="id" referencedTableName="products"/>
+    </changeSet>
+</databaseChangeLog>
